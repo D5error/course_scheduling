@@ -11,6 +11,8 @@
     * `教师评价比重，学生评价比重`只需填一行
     * 具体可参考[data.xlsx](data.xlsx)
 
+        ![alt text](image.png)
+
 2. 运行方法
 打开并运行[main.py](main.py)文件，运行是否成功会输出信息提示。
 
