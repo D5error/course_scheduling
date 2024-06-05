@@ -26,6 +26,8 @@ def load_schedule(path):
     global Rooms # 教室
     global A # 教师满意度
     global B # 学生满意度
+    global p
+    global q
     df = pd.read_excel(path, sheet_name=0)
     C = df[df["课程"].notna()]["课程"]
     T = df[df["教师"].notna()]["教师"]
