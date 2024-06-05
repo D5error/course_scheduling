@@ -1,15 +1,11 @@
 '''
 描述：模型求解
-作者：张为胜
-开始时间：2024/06/02
 '''
-
-
 import pulp
 import load
 
 
-def solve(p, q):
+def solve():
     # 定义问题
     prob = pulp.LpProblem("SchedulingSystem", pulp.LpMaximize)
 
@@ -27,9 +23,9 @@ def solve(p, q):
     P = range(len(P_mat))
     S = range(len(S_mat))
     x = pulp.LpVariable.dict("x_ijklr", (C,T, W, P, S), cat=pulp.LpBinary)
-
+    p = load.p
+    q = load.q
     # 添加目标函数
-    # (p * A[l] + q * B[l]) *  
     prob += pulp.lpSum((p * A[l] + q * B[l]) * x[(i, j, k, l, r)] 
                        for i in C for j in T for k in W for l in P for r in S if i == j)
     
@@ -73,7 +69,7 @@ def solve(p, q):
         for r in S:
             prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for k in W for l in P if i == j) <= 4)
 
-    # # 约束8：每个老师每周最多上12次课，最少上2次课
+    # 约束8：每个老师每周最多上12次课，最少上2次课
     for j in T:
         prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) <= 12)
         prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) >= 2)
@@ -126,10 +122,8 @@ def solve(p, q):
     # 打印结果
     print(pulp.LpStatus[prob.status]) # 输出问题设定参数和条件
     if pulp.LpStatus[prob.status] == "Optimal":
-        # 返回结果
         ret = []
         for v in prob.variables():
-            # print(v.name, "=", v.varValue)
             if(v.varValue == 1):
                 ret.append(v.name.split("_")[-5 :])
 
