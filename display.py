@@ -85,12 +85,13 @@ def make_html(data, name, isClass=False, isTeacher=False):
         html_content += f"<tr>\n    <td>{part}</td>\n"
         for day in W:
             course_name = ""
+            same_class = [] # 同时上课的班级
             for course in courses:
                 if course["day"] == day and course["part"] == i:
                     course_name = course["course"]
-                    break
+                    same_class.append(course["class"])
             if course_name:
-                html_content += f"<td class='course'>课程：{course_name}<br>教师：{course['teacher']}<br>班级：{course['class']}<br>教室：{course['classroom']}</td>\n"
+                html_content += f"<td class='course'>课程：{course_name}<br>教师：{course['teacher']}<br>班级：{'，'.join(same_class)}<br>教室：{course['classroom']}</td>\n"
             else:
                 html_content += "<td></td>\n"
         html_content += "</tr>\n"
