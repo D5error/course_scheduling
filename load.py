@@ -1,5 +1,5 @@
 '''
-描述：导入数据
+描述：导入数据，可视化结果
 '''
 import openpyxl
 import os
@@ -53,13 +53,13 @@ def generate_schedule(path, list_A, list_B, list_W, list_P,list_S, float_p=0.5, 
         start = item[0]
         end = item[1]
 
-        C = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["课程"]
-        T = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["任课教师"]
+        C = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["课程"].str.strip()
+        T = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["任课教师"].str.strip()
         W = pd.Series(list_W)
         P = pd.Series(list_P)
-        Rooms = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["上课地点"]
-        WeeksOfClass = df.loc[start: end, ["课程", "上课周次"]]["上课周次"]
-        GradeMajor = pd.Series([str(df.loc[start, "年级专业"])]) 
+        Rooms = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["上课地点"].str.strip()
+        WeeksOfClass = df.loc[start: end, ["课程", "上课周次"]]["上课周次"].str.strip()
+        GradeMajor = pd.Series([str(df.loc[start, "年级专业"])]).str.strip()
         S = pd.Series(list_S[i])
         A = list_A
         B = list_B
@@ -103,7 +103,6 @@ def make_html(data, name, isClass=False, isTeacher=False):
             continue
         if isTeacher and T[j] != name:
             continue
-        # print(f"{C[i]}, {T[j]}, {Rooms[i]}")
         courses.append({"course": C[i], "teacher": T[j], "day": W[k], "part": l, "class": S[r], "room": Rooms[j], "weeksofclass": WeeksOfClass[j]})
     
     # 生成HTML内容
@@ -148,7 +147,7 @@ def make_html(data, name, isClass=False, isTeacher=False):
         """
     else:
         html_content += f"""
-        教师：{name}</h1>
+        年级专业：{GradeMajor.tolist()[0]}<br>教师：{name}</h1>
             <table>
                 <tr>
                     <th>时间</th>
@@ -182,17 +181,22 @@ def make_html(data, name, isClass=False, isTeacher=False):
     </body>
     </html>
     """
-    if not os.path.exists("result"):
-        os.makedirs("result")
+
+    # 创建文件夹
+    if not os.path.exists("result/学生课程表"):
+        os.makedirs("result/学生课程表")
+    if not os.path.exists("result/教师课程表"):
+        os.makedirs("result/教师课程表")
 
     # 将HTML内容写入文件
     if isTeacher:
-        print(GradeMajor)
-        with open(f"./result/{GradeMajor.tolist()[0]}-{name}.html", "w", encoding="utf-8") as file:
+        if not os.path.exists(f"result/教师课程表/{GradeMajor.tolist()[0]}"):
+                os.makedirs(f"result/教师课程表/{GradeMajor.tolist()[0]}")   
+        with open(f"./result/教师课程表/{GradeMajor.tolist()[0]}/{name}.html", "w", encoding="utf-8") as file:
             file.write(html_content)
-        print(f"课程表已生成，请打开 './result/{GradeMajor.tolist()[0]}-{name}.html' 查看。")
+        print(f"课程表已生成，请打开 './result/教师课程表/{GradeMajor.tolist()[0]}/{name}.html' 查看。")
         
     else:
-        with open(f"./result/{name}.html", "w", encoding="utf-8") as file:
+        with open(f"./result/学生课程表/{name}.html", "w", encoding="utf-8") as file:
             file.write(html_content)
-        print(f"课程表已生成，请打开 './result/{name}.html' 查看。")
+        print(f"课程表已生成，请打开 './result/学生课程表/{name}.html' 查看。")
