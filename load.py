@@ -60,9 +60,7 @@ def generate_schedule(path, list_A, list_B, list_W, list_P,list_S, float_p=0.5, 
         Rooms = df.loc[start: end, ["课程", "任课教师", "上课地点"]]["上课地点"]
         WeeksOfClass = df.loc[start: end, ["课程", "上课周次"]]["上课周次"]
         GradeMajor = pd.Series([str(df.loc[start, "年级专业"])]) 
-        # S = pd.Series([str(df.loc[start, "年级专业"])])
         S = pd.Series(list_S[i])
-        print(S)
         A = list_A
         B = list_B
         p = float_p
@@ -78,8 +76,8 @@ def generate_schedule(path, list_A, list_B, list_W, list_P,list_S, float_p=0.5, 
             make_html(data, s, isClass=True)
 
         # 生成教师课程表
-    # for j in T:
-    #     make_html(data, j, isTeacher=True)
+        for j in T:
+            make_html(data, j, isTeacher=True)
     
 
 def make_html(data, name, isClass=False, isTeacher=False):
@@ -143,7 +141,7 @@ def make_html(data, name, isClass=False, isTeacher=False):
     """
     if isClass:
         html_content += f"""
-        年级专业：{name}</h1>
+        班级：{name}</h1>
             <table>
                 <tr>
                     <th>时间</th>
@@ -188,6 +186,13 @@ def make_html(data, name, isClass=False, isTeacher=False):
         os.makedirs("result")
 
     # 将HTML内容写入文件
-    with open(f"./result/{name}.html", "w", encoding="utf-8") as file:
-        file.write(html_content)
-    print(f"课程表已生成，请打开 './result/{name}.html' 查看。")
+    if isTeacher:
+        print(GradeMajor)
+        with open(f"./result/{GradeMajor.tolist()[0]}-{name}.html", "w", encoding="utf-8") as file:
+            file.write(html_content)
+        print(f"课程表已生成，请打开 './result/{GradeMajor.tolist()[0]}-{name}.html' 查看。")
+        
+    else:
+        with open(f"./result/{name}.html", "w", encoding="utf-8") as file:
+            file.write(html_content)
+        print(f"课程表已生成，请打开 './result/{name}.html' 查看。")
