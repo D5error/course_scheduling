@@ -25,6 +25,7 @@ def solve():
     x = pulp.LpVariable.dict("x_ijklr", (C,T, W, P, S), cat=pulp.LpBinary)
     p = load.p
     q = load.q
+
     # 添加目标函数
     prob += pulp.lpSum((p * A[l] + q * B[l]) * x[(i, j, k, l, r)] 
                        for i in C for j in T for k in W for l in P for r in S if i == j)
@@ -70,9 +71,9 @@ def solve():
             prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for k in W for l in P if i == j) <= 4)
 
     # 约束8：每个老师每周最多上12次课，最少上2次课
-    for j in T:
-        prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) <= 12)
-        prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) >= 2)
+    # for j in T:
+    #     prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) <= 12)
+    #     prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for l in P for k in W for r in S if i == j) >= 2)
 
     # 约束9：每个班每周最多4个早八
     for r in S:
