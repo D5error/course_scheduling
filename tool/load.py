@@ -5,7 +5,7 @@ import openpyxl
 import os
 import pandas as pd
 import numpy as np
-from solve import *
+from .solve import *
 
 
 

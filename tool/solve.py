@@ -2,7 +2,7 @@
 描述：模型求解
 '''
 import pulp
-import load
+import tool.load as load
 
 
 def solve():
