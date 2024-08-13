@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 2px solid #fff;
+    padding: 40px;
+    text-align: center;
+}
+th {
+    background-color: #ffffff;
+}
+.course {
+    background-color: #4196ff;
+    color: #ffffff;
+}

@@ -5,6 +5,7 @@
 1. 填写数据
     * 具体可参考[data.xlsx](data.xlsx)
     * 在文件[config.yaml](./config.yaml)填写参数
+    * 可在css文件夹内的css文件修改课程表样式
 
 2. 运行方法
 打开并运行[main.py](main.py)文件，运行是否成功会输出信息提示。

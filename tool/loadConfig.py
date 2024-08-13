@@ -1,4 +1,6 @@
 import yaml
+
+
 def loadConfig():
     with open("./config.yaml", "r", encoding="utf-8") as f:
         data = yaml.load(f.read(), Loader=yaml.FullLoader)

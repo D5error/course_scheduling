@@ -1,30 +1,18 @@
-'''
-描述：模型求解
-'''
 import pulp
-import tool.load as load
 
 
-def solve():
+def solve(A, B, C, W, T, P, S, p, q):
     # 定义问题
     prob = pulp.LpProblem("SchedulingSystem", pulp.LpMaximize)
 
     # 定义决策变量，且为非负二元变量
-    C_mat = load.C
-    T_mat = load.T
-    W_mat = load.W
-    P_mat = load.P
-    S_mat = load.S
-    A = load.A
-    B = load.B
-    C = range(len(C_mat))
-    T = range(len(T_mat))
-    W = range(len(W_mat))
-    P = range(len(P_mat))
-    S = range(len(S_mat))
+    C = range(len(C))
+    W = range(len(W))
+    T = range(len(T))
+    P = range(len(P))
+    S = range(len(S))
     x = pulp.LpVariable.dict("x_ijklr", (C,T, W, P, S), cat=pulp.LpBinary)
-    p = load.p
-    q = load.q
+    
 
     # 添加目标函数
     prob += pulp.lpSum((p * A[l] + q * B[l]) * x[(i, j, k, l, r)] 
