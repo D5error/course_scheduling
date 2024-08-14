@@ -44,8 +44,8 @@ class generateTimetable:
             
             # 生成班级课程表
             for s in S:
-                make_student_html(data, s, C, T, self.W, self.P, self.S, rooms, weeks_of_class)
+                make_student_html(data, s, C, T, W, P, S, rooms, weeks_of_class)
 
             # 生成教师课程表
             for j in T:
-                make_teacher_html(data, j, C, T, self.W, self.P, self.S, rooms, weeks_of_class, grade_major)
+                make_teacher_html(data, j, C, T, W, P, S, rooms, weeks_of_class, grade_major)

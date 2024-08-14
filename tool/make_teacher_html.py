@@ -5,11 +5,9 @@ def make_teacher_html(data, name, C, T, W, P, S, rooms, weeks_of_class, grade_ma
     # 类型转换
     C = C.tolist()
     T = T.tolist()
-    # W = W.tolist()
-    # P = P.tolist()
-    # S = S.tolist()
     rooms = rooms.tolist()
     weeks_of_class = weeks_of_class.tolist()
+    grade_major = grade_major[0]
 
     # 提取课程表信息
     courses = []
@@ -28,7 +26,7 @@ def make_teacher_html(data, name, C, T, W, P, S, rooms, weeks_of_class, grade_ma
     with open("./htmlConfig/timetable.html", 'r', encoding="utf-8") as f:
         html_content = f.read()
     html_content += f"""
-    年级专业：{grade_major.tolist()[0]}<br>教师：{name}</h1>
+    年级专业：{grade_major}<br>教师：{name}</h1>
         <table>
             <tr>
                 <th>时间</th>
@@ -65,7 +63,7 @@ def make_teacher_html(data, name, C, T, W, P, S, rooms, weeks_of_class, grade_ma
 
     # 生成文件夹
     make_file("result/教师课程表/css")
-    make_file(f"result/教师课程表/{grade_major.tolist()[0]}")
+    make_file(f"result/教师课程表/{grade_major}")
 
     # 导入css
     with open("./css/timetable.css", "r", encoding="utf-8") as css:
@@ -74,6 +72,6 @@ def make_teacher_html(data, name, C, T, W, P, S, rooms, weeks_of_class, grade_ma
         f.write(css)
 
     # 将HTML内容写入文件        
-    with open(f"./result/教师课程表/{grade_major.tolist()[0]}/{name}.html", "w", encoding="utf-8") as file:
+    with open(f"./result/教师课程表/{grade_major}/{name}.html", "w", encoding="utf-8") as file:
         file.write(html_content)
-    print(f"课程表已生成，请打开 './result/教师课程表/{grade_major.tolist()[0]}/{name}.html' 查看。")
+    # print(f"课程表已生成，请打开 './result/教师课程表/{grade_major}/{name}.html' 查看。")

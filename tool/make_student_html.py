@@ -5,9 +5,6 @@ def make_student_html(data, name, C, T, W, P, S, rooms, weeks_of_class):
     # 类型转换
     C = C.tolist()
     T = T.tolist()
-    # W = W.tolist()
-    # P = P.tolist()
-    # S = S.tolist()
     rooms = rooms.tolist()
     weeks_of_class = weeks_of_class.tolist()
 
@@ -23,9 +20,6 @@ def make_student_html(data, name, C, T, W, P, S, rooms, weeks_of_class):
         if S[r] != name:
             continue
         courses.append({"course": C[i], "teacher": T[j], "day": W[k], "part": l, "class": S[r], "room": rooms[j], "weeksofclass": weeks_of_class[j]})
-    
-    with open("temp.txt", "w") as f:
-        f.write(str(courses))
 
     # 生成HTML内容
     with open("./htmlConfig/timetable.html", 'r', encoding="utf-8") as f:
@@ -79,4 +73,4 @@ def make_student_html(data, name, C, T, W, P, S, rooms, weeks_of_class):
     # 生成html    
     with open(f"./result/学生课程表/{name}.html", "w", encoding="utf-8") as file:
         file.write(html_content)
-    print(f"课程表已生成，请打开 './result/学生课程表/{name}.html' 查看。")
+    # print(f"课程表已生成，请打开 './result/学生课程表/{name}.html' 查看。")

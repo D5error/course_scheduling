@@ -2,6 +2,8 @@ import pulp
 
 
 def solve(A, B, C, W, T, P, S, p, q):
+    class_name = S
+
     # 定义问题
     prob = pulp.LpProblem("SchedulingSystem", pulp.LpMaximize)
 
@@ -106,7 +108,7 @@ def solve(A, B, C, W, T, P, S, p, q):
                 prob += (pulp.lpSum(x[i, j, k, l, r] for i in C for j in T if i == j) <= 1)
 
     # 求解问题
-    prob.solve()
+    prob.solve(pulp.PULP_CBC_CMD(msg=False))
 
     # 打印结果
     print(pulp.LpStatus[prob.status]) # 输出问题设定参数和条件
@@ -115,8 +117,11 @@ def solve(A, B, C, W, T, P, S, p, q):
         for v in prob.variables():
             if(v.varValue == 1):
                 ret.append(v.name.split("_")[-5 :])
-
-        print("目标函数的最大值 = ", pulp.value(prob.objective))
+        print("============================")
+        for name in class_name: 
+            print(name, end=', ')
+        print("：目标函数的最大值 = ", pulp.value(prob.objective))
+        print("============================")
         return ret
     else:
         print("无可行解")
