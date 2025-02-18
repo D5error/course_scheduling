@@ -1,18 +1,37 @@
 import pulp
 
 
-def solve(A, B, C, W, T, P, S, p, q):
-    class_name = S
+def string_to_int(list):
+    return range(len(list))
 
-    # 定义问题
+
+def solve(A, B, C, W, T, P, S, p, q):
+    """
+    A: 教师满意度
+    B: 学生满意度
+    C: 课程
+    W: 星期
+    T: 时间
+    P: 节数
+    S: 班级
+    p: 教师权重
+    q: 学生权重
+    """
+
+    # 定义线性规划问题
     prob = pulp.LpProblem("SchedulingSystem", pulp.LpMaximize)
 
+    # 班级名称
+    class_name = S
+
+    # excel表格中的数据是中文，需要转换为数字
+    C = string_to_int(C)
+    W = string_to_int(W)
+    T = string_to_int(T)
+    P = string_to_int(P)
+    S = string_to_int(S)
+
     # 定义决策变量，且为非负二元变量
-    C = range(len(C))
-    W = range(len(W))
-    T = range(len(T))
-    P = range(len(P))
-    S = range(len(S))
     x = pulp.LpVariable.dict("x_ijklr", (C,T, W, P, S), cat=pulp.LpBinary)
     
 
@@ -95,6 +114,7 @@ def solve(A, B, C, W, T, P, S, p, q):
                     for l in P:
                         for r in S:
                             prob += (pulp.lpSum(x[i, j, k, l, r]) >= 0)
+
     # 约束14：二元性
         # 已在定义变量时给出
 
@@ -111,18 +131,22 @@ def solve(A, B, C, W, T, P, S, p, q):
     prob.solve(pulp.PULP_CBC_CMD(msg=False))
 
     # 打印结果
-    print(pulp.LpStatus[prob.status]) # 输出问题设定参数和条件
+    print(pulp.LpStatus[prob.status])
+    # 求解成功
     if pulp.LpStatus[prob.status] == "Optimal":
-        ret = []
+        result_ijklr = []
+
+        # 提取ijklr
         for v in prob.variables():
             if(v.varValue == 1):
-                ret.append(v.name.split("_")[-5 :])
-        print("============================")
+                result_ijklr.append(v.name.split("_")[-5 :])
+
+        # 打印结果
         for name in class_name: 
             print(name, end=', ')
-        print("：目标函数的最大值 = ", pulp.value(prob.objective))
-        print("============================")
-        return ret
-    else:
-        print("无可行解")
-        return
+        print("：目标函数的最大值 =", pulp.value(prob.objective))
+
+        return result_ijklr
+
+    # 求解失败
+    raise RuntimeError("无可行解\n\n\n求解失败！")
